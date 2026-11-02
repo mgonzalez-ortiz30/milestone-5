@@ -1,0 +1,234 @@
+---
+title: "Flight Patterns Across the Year"
+subtitle: "A public-data plan for seasonal volume, delays, and network effects"
+author: ""
+date: today
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+:root {
+  --ink: #172923;
+  --muted: #62726a;
+  --paper: #f5f4ed;
+  --panel: #fffef9;
+  --green: #176b55;
+  --lime: #bfd75a;
+  --coral: #e5674f;
+  --gold: #e7ae3b;
+  --line: #d9ded3;
+}
+body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; }
+#quarto-content { max-width: 1080px; }
+.quarto-title-block .title { font-family: 'Playfair Display', Georgia, serif; font-size: 3rem; color: var(--ink); }
+.quarto-title-block .subtitle { color: var(--muted); font-size: 1.15rem; }
+h1, h2, h3 { color: var(--ink); }
+h2 { font-family: 'Playfair Display', Georgia, serif; border-bottom: 1px solid var(--line); padding-bottom: .35rem; }
+a { color: var(--green); }
+.callout { border-left-color: var(--coral) !important; background: var(--panel); }
+table { background: var(--panel); }
+.figure, figure { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 1rem; }
+.figure-caption, figcaption { color: var(--muted); font-size: .9rem; }
+code { font-family: 'DM Mono', monospace; }
+</style>
+
+## Research brief
+
+**Best starting point:** the U.S. Bureau of Transportation Statistics (BTS) Airline On-Time Performance dataset. It is the closest single public source to the temporal, route, and operational fields in this project. Treat a flight as one row, keep these variable groups together as a readable schema, and analyze them jointly.
+
+The graphics below are **analysis schematics**, not empirical findings: no flight records have been downloaded or summarized. They show how to organize the questions and fields before calculating seasonal patterns.
+
+::: {.callout-important}
+## Research question
+How do commercial flight volume and operational reliability vary by season, route, and departure window, and when do disruptions at major airports appear in later flights on the same aircraft or carrier network?
+:::
+
+## Public data sources
+
+| Source | What it offers | Fit and caveats |
+|:--|:--|:--|
+| [BTS Airline On-Time Performance](https://www.transtats.bts.gov/ontime/) | U.S. reporting-carrier flight records with scheduled and actual times, airport pair, distance, delays, taxi times, cancellations, and delay-cause fields. | **Recommended core.** Strongest match for the requested fields and multi-year seasonality. It is U.S.-focused; inspect the selected months, reporting coverage, field definitions, and missing values before analysis. |
+| [OpenSky Network data](https://opensky-network.org/data/) | ADS-B surveillance data such as observed aircraft states and trajectories, subject to access and dataset terms. | Useful for studying observed movement or validating flight paths, but not a drop-in replacement for BTS schedules, cancellation reasons, or delay-cause minutes. The supplied “OpenSky” URL points to Aviationstack, not OpenSky. |
+| [Kaggle flight dataset supplied in the prompt](https://www.kaggle.com/datasets/niszarkiah/flight-dataset) | A community-hosted flight dataset. | The supplied page returned **404** when checked on 2026-11-02. If it becomes available, verify its original source, time span, definitions, and redistribution terms before using it. |
+| [Aviationstack API](https://aviationstack.com/) | API-based flight and aviation data. | This is the service at the supplied second URL, not OpenSky. Confirm the plan's historical date range, fields, and reuse limits; API access and historical coverage may be plan-dependent. |
+| [NOAA Integrated Surface Database](https://www.ncei.noaa.gov/products/land-based-station/integrated-surface-database) | Quality-controlled surface weather observations from stations around the world. | Add as a weather-measurement source. Match airport/station and observation time carefully; it is not the same thing as BTS's attributed `WeatherDelay` minutes. |
+
+### Recommended dataset design
+
+Start with BTS monthly extracts for a consistent multi-year period, for example 2019–2024. Keep the original flight-level table as the source of truth; organize variables into the three conceptual groups below rather than splitting them into separate datasets. Add a weather table only when needed, joined by airport and timestamp. Record each source's download date and selected months.
+
+| Idea | Candidate BTS fields | What to examine |
+|:--|:--|:--|
+| **Temporal values** | `FlightDate`, `Month`, `DayOfWeek`, `CRSDepTime`, `DepTime`, `CRSElapsedTime` | Flights by month/day, departure windows, seasonal delay and cancellation rates. |
+| **Route variables** | `Origin`, `Dest`, `Distance`, `Flight_Number_Reporting_Airline`, `Tail_Number` | Airport pairs, route distance, carrier/flight comparisons, and aircraft rotations. |
+| **Operation variables** | `DepDelay`, `ArrDelay`, `TaxiOut`, `TaxiIn`, `Cancelled`, `CancellationCode`, `CarrierDelay`, `WeatherDelay`, `NASDelay`, `SecurityDelay`, `LateAircraftDelay` | Delay distributions, cancellation rates, ground time, and attributed delay causes. |
+
+The precise available columns can vary by extract and year. Confirm names in the downloaded BTS schema before writing the import step. BTS delay-cause fields describe attributed delay minutes; they are **not** direct meteorological observations. For a weather-based model, join weather observations (or forecasts available at prediction time) separately.
+
+## 1. Temporal values: find the seasonal shape
+
+Compare full years month by month, then break results out by day of week and scheduled departure window. Use flight counts for volume and rates or distributions for reliability: a busy month and a delay-prone month are different findings. Scheduled departure time is often recorded in local airport time, so normalize time zones and daylight-saving transitions before joining weather observations.
+
+```{r}
+library(ggplot2)
+
+season_grid <- expand.grid(
+  month = 1:12,
+  measure = c("Flight volume", "Departure delay", "Arrival delay", "Cancellations")
+)
+season_grid$measure <- factor(
+  season_grid$measure,
+  levels = rev(c("Flight volume", "Departure delay", "Arrival delay", "Cancellations"))
+)
+season_grid$quarter <- factor((season_grid$month - 1) %/% 3 + 1)
+
+ ggplot(season_grid, aes(x = month, y = measure, fill = quarter)) +
+  geom_tile(width = 0.94, height = 0.78, color = "#f5f4ed", linewidth = 1.2) +
+  scale_x_continuous(breaks = 1:12, labels = month.abb, expand = c(0, 0)) +
+  scale_fill_manual(values = c("1" = "#bfd75a", "2" = "#e7ae3b", "3" = "#e5674f", "4" = "#176b55"), name = "Quarter") +
+  labs(
+    title = "One calendar, four seasonal signals",
+    subtitle = "Analysis grid only; cells contain no observed values",
+    x = NULL, y = NULL,
+    caption = "Calculate each measure from flight-level records, with comparable coverage across months."
+  ) +
+  theme_minimal(base_family = "DM Sans", base_size = 12) +
+  theme(
+    panel.grid = element_blank(),
+    axis.text.y = element_text(color = "#172923", face = "bold"),
+    axis.text.x = element_text(color = "#62726a", face = "bold"),
+    plot.title = element_text(family = "Playfair Display", face = "bold", size = 19, color = "#172923"),
+    plot.subtitle = element_text(color = "#62726a"),
+    plot.caption = element_text(color = "#62726a", hjust = 0),
+    legend.position = "none",
+    plot.margin = margin(12, 12, 8, 12)
+  )
+```
+
+**Useful comparisons:** monthly scheduled flight count; median and 90th-percentile departure/arrival delay; cancellation rate; and all of these by departure-time window. Compare like-for-like years, since a single year's holiday calendar and disruptions can distort a seasonal pattern.
+
+## 2. Route variables: put airport pairs in context
+
+The route is the `Origin`–`Dest` pair, not either airport in isolation. Distance helps stratify comparisons, while flight number and tail number support carrier and aircraft-rotation questions. The sketch below uses representative U.S. hubs only to illustrate a network view; its links are not claims about observed BTS traffic.
+
+```{r}
+airports <- data.frame(
+  code = c("SEA", "SFO", "LAX", "DEN", "DFW", "ORD", "ATL", "JFK", "MIA"),
+  lon = c(-122.3, -122.4, -118.4, -104.7, -97.0, -87.9, -84.4, -73.8, -80.3),
+  lat = c(47.4, 37.6, 33.9, 39.9, 32.9, 41.98, 33.6, 40.6, 25.8),
+  region = c("West", "West", "West", "Central", "Central", "Central", "East", "East", "East")
+)
+route_pairs <- data.frame(
+  from = c("SEA", "SFO", "LAX", "DEN", "DFW", "ORD", "ATL", "JFK", "ATL", "MIA"),
+  to   = c("ORD", "DEN", "DFW", "ORD", "ATL", "JFK", "JFK", "MIA", "MIA", "LAX")
+)
+route_links <- merge(route_pairs, airports, by.x = "from", by.y = "code")
+names(route_links)[names(route_links) == "lon"] <- "x"
+names(route_links)[names(route_links) == "lat"] <- "y"
+route_links <- merge(route_links, airports, by.x = "to", by.y = "code")
+names(route_links)[names(route_links) == "lon"] <- "xend"
+names(route_links)[names(route_links) == "lat"] <- "yend"
+
+ ggplot() +
+  geom_curve(
+    data = route_links,
+    aes(x = x, y = y, xend = xend, yend = yend),
+    curvature = 0.16, color = "#98a79b", alpha = 0.8, linewidth = 0.8
+  ) +
+  geom_point(data = airports, aes(lon, lat, fill = region), shape = 21, size = 5, color = "#fffef9", stroke = 1.2) +
+  geom_label(data = airports, aes(lon, lat, label = code), nudge_y = 1.8, size = 3.1,
+             label.size = 0, label.padding = unit(0.12, "lines"), fill = "#fffef9", color = "#172923", family = "DM Mono") +
+  scale_fill_manual(values = c("West" = "#e5674f", "Central" = "#e7ae3b", "East" = "#176b55"), name = "Region") +
+  coord_quickmap(xlim = c(-127, -68), ylim = c(23, 51)) +
+  labs(
+    title = "A route is a connected pair",
+    subtitle = "Illustrative hub links; no route counts or actual BTS paths shown",
+    x = NULL, y = NULL,
+    caption = "Use origin, destination, distance, reporting flight number, and tail number to build the observed network."
+  ) +
+  theme_void(base_family = "DM Sans", base_size = 12) +
+  theme(
+    plot.title = element_text(family = "Playfair Display", face = "bold", size = 19, color = "#172923"),
+    plot.subtitle = element_text(color = "#62726a"),
+    plot.caption = element_text(color = "#62726a", hjust = 0),
+    legend.position = "bottom",
+    legend.title = element_text(color = "#172923", face = "bold"),
+    plot.margin = margin(12, 12, 8, 12)
+  )
+```
+
+**Useful comparisons:** seasonal volume and delay by route; compare routes within distance bands; and trace consecutive legs by tail number to test whether an inbound disruption is followed by a late outbound flight. A tail number is not a permanent person- or aircraft-level key across all time, and aircraft rotations need date-aware sequencing.
+
+## 3. Operation variables: separate outcomes from causes
+
+Departure delay, arrival delay, taxi-out/in, cancellations, and delay-cause minutes describe different stages or outcomes. Keep cancellation records in the denominator when calculating cancellation rates; missing arrival or delay values on a canceled flight are not zero-minute outcomes.
+
+```{r}
+operation_steps <- data.frame(
+  x = c(1, 2, 3, 4),
+  label = c("Scheduled\ndeparture", "Actual\ndeparture", "Actual\narrival", "Recorded\noutcome"),
+  detail = c("CRSDepTime", "DepTime\nDepDelay · TaxiOut", "ArrTime\nArrDelay · TaxiIn", "Cancelled\nCause minutes")
+)
+operation_causes <- data.frame(
+  x = c(1.55, 2.45, 3.35, 4.25),
+  y = rep(0.12, 4),
+  label = c("Carrier", "Weather", "NAS", "Security /\nlate aircraft"),
+  field = c("CarrierDelay", "WeatherDelay", "NASDelay", "SecurityDelay\nLateAircraftDelay")
+)
+
+ ggplot() +
+  geom_segment(aes(x = 1, y = 1, xend = 4, yend = 1), color = "#cbd4c8", linewidth = 1.2) +
+  geom_point(data = operation_steps, aes(x, 1, fill = factor(x)), shape = 21, size = 12, color = "#fffef9", stroke = 1.5) +
+  geom_text(data = operation_steps, aes(x, 1, label = x), color = "#172923", size = 4, family = "DM Mono", fontface = "bold") +
+  geom_label(data = operation_steps, aes(x, 1.75, label = label), fill = "#fffef9", color = "#172923", label.size = 0,
+             size = 3.5, fontface = "bold", lineheight = 0.95) +
+  geom_text(data = operation_steps, aes(x, 0.62, label = detail), color = "#62726a", size = 3.1, lineheight = 0.95) +
+  geom_segment(aes(x = 1.5, y = 0.12, xend = 4.3, yend = 0.12), color = "#e5674f", linewidth = 0.8, linetype = "dashed") +
+  geom_point(data = operation_causes, aes(x, y), color = "#e5674f", size = 2.5) +
+  geom_text(data = operation_causes, aes(x, y = -0.08, label = label), color = "#172923", size = 3.1, fontface = "bold") +
+  geom_text(data = operation_causes, aes(x, y = -0.42, label = field), color = "#62726a", size = 2.7, family = "DM Mono") +
+  scale_fill_manual(values = c("1" = "#bfd75a", "2" = "#e7ae3b", "3" = "#e5674f", "4" = "#176b55"), guide = "none") +
+  scale_x_continuous(limits = c(0.55, 4.55), breaks = NULL) +
+  scale_y_continuous(limits = c(-0.68, 2.15), breaks = NULL) +
+  labs(
+    title = "Follow the operation, then classify the disruption",
+    subtitle = "Delay-cause fields explain attributed minutes; they are not weather-station readings",
+    x = NULL, y = NULL,
+    caption = "Schematic only. Cause fields may be missing or zero; inspect BTS definitions and reporting rules."
+  ) +
+  theme_void(base_family = "DM Sans", base_size = 12) +
+  theme(
+    plot.title = element_text(family = "Playfair Display", face = "bold", size = 19, color = "#172923"),
+    plot.subtitle = element_text(color = "#62726a"),
+    plot.caption = element_text(color = "#62726a", hjust = 0),
+    plot.margin = margin(12, 12, 8, 12)
+  )
+```
+
+For delay prediction, define *when* the prediction is made and only use inputs available then. Do not feed actual departure/arrival times, realized delay, or post-flight cause fields into a model meant to predict delay before departure; that leaks the answer. Use a chronological train/test split, and report performance by season, airport, and carrier.
+
+## Analysis plan
+
+1. Download matching BTS monthly extracts and document the date span, schema, and reporting coverage.
+2. Parse time fields carefully; distinguish missing, canceled, diverted, and zero-delay records.
+3. Plot monthly flight counts, cancellation rates, and robust delay summaries, with day-of-week and scheduled-departure-window breakdowns.
+4. Add NOAA station observations for weather features, converting airport-local scheduled times to UTC and checking station proximity and coverage.
+5. For network propagation, order flights by tail number and timestamp; test whether disruption at an inbound origin predicts the next leg's delay after controlling for season, route, carrier, and airport.
+6. Evaluate predictive models with time-ordered splits and features that would genuinely be available at the prediction moment.
+
+## Sources
+
+- BTS, [Airline On-Time Statistics and Delay Causes](https://www.transtats.bts.gov/ontime/).
+- OpenSky Network, [Data](https://opensky-network.org/data/).
+- Kaggle, [Flight Dataset supplied in the project prompt](https://www.kaggle.com/datasets/niszarkiah/flight-dataset) (page returned 404 when checked 2026-11-02).
+- Aviationstack, [Flight API](https://aviationstack.com/).
+- NOAA NCEI, [Integrated Surface Database](https://www.ncei.noaa.gov/products/land-based-station/integrated-surface-database).
