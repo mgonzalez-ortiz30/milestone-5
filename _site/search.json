@@ -1,0 +1,72 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "How Does Flight Distance Relate to Time in the Air?",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+  },
+  {
+    "objectID": "project.html",
+    "href": "project.html",
+    "title": "Flight Patterns Across the Year",
+    "section": "",
+    "text": "Best starting point: the U.S. Bureau of Transportation Statistics (BTS) Airline On-Time Performance dataset. It is the closest single public source to the temporal, route, and operational fields in this project. Treat a flight as one row, keep these variable groups together as a readable schema, and analyze them jointly.\nThe graphics below are analysis schematics, not empirical findings: no flight records have been downloaded or summarized. They show how to organize the questions and fields before calculating seasonal patterns.\n\n\n\n\n\n\nImportantResearch question\n\n\n\nHow do commercial flight volume and operational reliability vary by season, route, and departure window, and when do disruptions at major airports appear in later flights on the same aircraft or carrier network?"
+  },
+  {
+    "objectID": "project.html#research-brief",
+    "href": "project.html#research-brief",
+    "title": "Flight Patterns Across the Year",
+    "section": "",
+    "text": "Best starting point: the U.S. Bureau of Transportation Statistics (BTS) Airline On-Time Performance dataset. It is the closest single public source to the temporal, route, and operational fields in this project. Treat a flight as one row, keep these variable groups together as a readable schema, and analyze them jointly.\nThe graphics below are analysis schematics, not empirical findings: no flight records have been downloaded or summarized. They show how to organize the questions and fields before calculating seasonal patterns.\n\n\n\n\n\n\nImportantResearch question\n\n\n\nHow do commercial flight volume and operational reliability vary by season, route, and departure window, and when do disruptions at major airports appear in later flights on the same aircraft or carrier network?"
+  },
+  {
+    "objectID": "project.html#public-data-sources",
+    "href": "project.html#public-data-sources",
+    "title": "Flight Patterns Across the Year",
+    "section": "2 Public data sources",
+    "text": "2 Public data sources\n\n\n\nSource\nWhat it offers\nFit and caveats\n\n\n\n\nBTS Airline On-Time Performance\nU.S. reporting-carrier flight records with scheduled and actual times, airport pair, distance, delays, taxi times, cancellations, and delay-cause fields.\nRecommended core. Strongest match for the requested fields and multi-year seasonality. It is U.S.-focused; inspect the selected months, reporting coverage, field definitions, and missing values before analysis.\n\n\nOpenSky Network data\nADS-B surveillance data such as observed aircraft states and trajectories, subject to access and dataset terms.\nUseful for studying observed movement or validating flight paths, but not a drop-in replacement for BTS schedules, cancellation reasons, or delay-cause minutes. The supplied “OpenSky” URL points to Aviationstack, not OpenSky.\n\n\nKaggle flight dataset supplied in the prompt\nA community-hosted flight dataset.\nThe supplied page returned 404 when checked on 2026-11-02. If it becomes available, verify its original source, time span, definitions, and redistribution terms before using it.\n\n\nAviationstack API\nAPI-based flight and aviation data.\nThis is the service at the supplied second URL, not OpenSky. Confirm the plan’s historical date range, fields, and reuse limits; API access and historical coverage may be plan-dependent.\n\n\nNOAA Integrated Surface Database\nQuality-controlled surface weather observations from stations around the world.\nAdd as a weather-measurement source. Match airport/station and observation time carefully; it is not the same thing as BTS’s attributed WeatherDelay minutes.\n\n\n\n\n2.1 Recommended dataset design\nStart with BTS monthly extracts for a consistent multi-year period, for example 2019–2024. Keep the original flight-level table as the source of truth; organize variables into the three conceptual groups below rather than splitting them into separate datasets. Add a weather table only when needed, joined by airport and timestamp. Record each source’s download date and selected months.\n\n\n\n\n\n\n\n\nIdea\nCandidate BTS fields\nWhat to examine\n\n\n\n\nTemporal values\nFlightDate, Month, DayOfWeek, CRSDepTime, DepTime, CRSElapsedTime\nFlights by month/day, departure windows, seasonal delay and cancellation rates.\n\n\nRoute variables\nOrigin, Dest, Distance, Flight_Number_Reporting_Airline, Tail_Number\nAirport pairs, route distance, carrier/flight comparisons, and aircraft rotations.\n\n\nOperation variables\nDepDelay, ArrDelay, TaxiOut, TaxiIn, Cancelled, CancellationCode, CarrierDelay, WeatherDelay, NASDelay, SecurityDelay, LateAircraftDelay\nDelay distributions, cancellation rates, ground time, and attributed delay causes.\n\n\n\nThe precise available columns can vary by extract and year. Confirm names in the downloaded BTS schema before writing the import step. BTS delay-cause fields describe attributed delay minutes; they are not direct meteorological observations. For a weather-based model, join weather observations (or forecasts available at prediction time) separately."
+  },
+  {
+    "objectID": "project.html#temporal-values-find-the-seasonal-shape",
+    "href": "project.html#temporal-values-find-the-seasonal-shape",
+    "title": "Flight Patterns Across the Year",
+    "section": "3 1. Temporal values: find the seasonal shape",
+    "text": "3 1. Temporal values: find the seasonal shape\nCompare full years month by month, then break results out by day of week and scheduled departure window. Use flight counts for volume and rates or distributions for reliability: a busy month and a delay-prone month are different findings. Scheduled departure time is often recorded in local airport time, so normalize time zones and daylight-saving transitions before joining weather observations.\n\n\n\n\n\n\n\n\n\nUseful comparisons: monthly scheduled flight count; median and 90th-percentile departure/arrival delay; cancellation rate; and all of these by departure-time window. Compare like-for-like years, since a single year’s holiday calendar and disruptions can distort a seasonal pattern."
+  },
+  {
+    "objectID": "project.html#route-variables-put-airport-pairs-in-context",
+    "href": "project.html#route-variables-put-airport-pairs-in-context",
+    "title": "Flight Patterns Across the Year",
+    "section": "4 2. Route variables: put airport pairs in context",
+    "text": "4 2. Route variables: put airport pairs in context\nThe route is the Origin–Dest pair, not either airport in isolation. Distance helps stratify comparisons, while flight number and tail number support carrier and aircraft-rotation questions. The sketch below uses representative U.S. hubs only to illustrate a network view; its links are not claims about observed BTS traffic.\n\n\n\n\n\n\n\n\n\nUseful comparisons: seasonal volume and delay by route; compare routes within distance bands; and trace consecutive legs by tail number to test whether an inbound disruption is followed by a late outbound flight. A tail number is not a permanent person- or aircraft-level key across all time, and aircraft rotations need date-aware sequencing."
+  },
+  {
+    "objectID": "project.html#operation-variables-separate-outcomes-from-causes",
+    "href": "project.html#operation-variables-separate-outcomes-from-causes",
+    "title": "Flight Patterns Across the Year",
+    "section": "5 3. Operation variables: separate outcomes from causes",
+    "text": "5 3. Operation variables: separate outcomes from causes\nDeparture delay, arrival delay, taxi-out/in, cancellations, and delay-cause minutes describe different stages or outcomes. Keep cancellation records in the denominator when calculating cancellation rates; missing arrival or delay values on a canceled flight are not zero-minute outcomes.\n\n\n\n\n\n\n\n\n\nFor delay prediction, define when the prediction is made and only use inputs available then. Do not feed actual departure/arrival times, realized delay, or post-flight cause fields into a model meant to predict delay before departure; that leaks the answer. Use a chronological train/test split, and report performance by season, airport, and carrier."
+  },
+  {
+    "objectID": "project.html#analysis-plan",
+    "href": "project.html#analysis-plan",
+    "title": "Flight Patterns Across the Year",
+    "section": "6 Analysis plan",
+    "text": "6 Analysis plan\n\nDownload matching BTS monthly extracts and document the date span, schema, and reporting coverage.\nParse time fields carefully; distinguish missing, canceled, diverted, and zero-delay records.\nPlot monthly flight counts, cancellation rates, and robust delay summaries, with day-of-week and scheduled-departure-window breakdowns.\nAdd NOAA station observations for weather features, converting airport-local scheduled times to UTC and checking station proximity and coverage.\nFor network propagation, order flights by tail number and timestamp; test whether disruption at an inbound origin predicts the next leg’s delay after controlling for season, route, carrier, and airport.\nEvaluate predictive models with time-ordered splits and features that would genuinely be available at the prediction moment."
+  },
+  {
+    "objectID": "project.html#sources",
+    "href": "project.html#sources",
+    "title": "Flight Patterns Across the Year",
+    "section": "7 Sources",
+    "text": "7 Sources\n\nBTS, Airline On-Time Statistics and Delay Causes.\nOpenSky Network, Data.\nKaggle, Flight Dataset supplied in the project prompt (page returned 404 when checked 2026-11-02).\nAviationstack, Flight API.\nNOAA NCEI, Integrated Surface Database."
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  }
+]
