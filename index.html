@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="">
-<meta name="dcterms.date" content="2026-11-02">
 
-<title>Flight Patterns Across the Year</title>
+<title>How Does Flight Distance Relate to Time in the Air?</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -31,45 +29,100 @@ ul.task-list li input[type="checkbox"] {
 </style>
 
 
-<script src="project_files/libs/clipboard/clipboard.min.js"></script>
-<script src="project_files/libs/quarto-html/quarto.js" type="module"></script>
-<script src="project_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="project_files/libs/quarto-html/popper.min.js"></script>
-<script src="project_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="project_files/libs/quarto-html/anchor.min.js"></script>
-<link href="project_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="project_files/libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="project_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="project_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="project_files/libs/bootstrap/bootstrap-599778174d9dd6ce730efbedad0fe166.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-bf27225e3a48a9273f3daa8f8e829971.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-977607561cd60f84a551947bb62c3781.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
 
 
+<link rel="stylesheet" href="styles.css">
 </head>
 
-<body class="quarto-light">
+<body class="nav-fixed quarto-light">
 
-<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
-<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-  <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul class="collapse">
-  <li><a href="#research-brief" id="toc-research-brief" class="nav-link active" data-scroll-target="#research-brief"><span class="header-section-number">1</span> Research brief</a></li>
-  <li><a href="#public-data-sources" id="toc-public-data-sources" class="nav-link" data-scroll-target="#public-data-sources"><span class="header-section-number">2</span> Public data sources</a></li>
-  <li><a href="#temporal-values-find-the-seasonal-shape" id="toc-temporal-values-find-the-seasonal-shape" class="nav-link" data-scroll-target="#temporal-values-find-the-seasonal-shape"><span class="header-section-number">3</span> 1. Temporal values: find the seasonal shape</a></li>
-  <li><a href="#route-variables-put-airport-pairs-in-context" id="toc-route-variables-put-airport-pairs-in-context" class="nav-link" data-scroll-target="#route-variables-put-airport-pairs-in-context"><span class="header-section-number">4</span> 2. Route variables: put airport pairs in context</a></li>
-  <li><a href="#operation-variables-separate-outcomes-from-causes" id="toc-operation-variables-separate-outcomes-from-causes" class="nav-link" data-scroll-target="#operation-variables-separate-outcomes-from-causes"><span class="header-section-number">5</span> 3. Operation variables: separate outcomes from causes</a></li>
-  <li><a href="#analysis-plan" id="toc-analysis-plan" class="nav-link" data-scroll-target="#analysis-plan"><span class="header-section-number">6</span> Analysis plan</a></li>
-  <li><a href="#sources" id="toc-sources" class="nav-link" data-scroll-target="#sources"><span class="header-section-number">7</span> Sources</a></li>
-  </ul>
-</nav>
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">How Does Flight Distance Relate to Time in the Air?</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link active" href="./index.html" aria-current="page"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
 </div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
+<!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Flight Patterns Across the Year</h1>
-<p class="subtitle lead">A public-data plan for seasonal volume, delays, and network effects</p>
+<h1 class="title">How Does Flight Distance Relate to Time in the Air?</h1>
 </div>
 
 
@@ -77,12 +130,6 @@ ul.task-list li input[type="checkbox"] {
 <div class="quarto-title-meta">
 
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">November 2, 2026</p>
-    </div>
-  </div>
   
     
   </div>
@@ -92,191 +139,20 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
-:root {
-  --ink: #172923;
-  --muted: #62726a;
-  --paper: #f5f4ed;
-  --panel: #fffef9;
-  --green: #176b55;
-  --lime: #bfd75a;
-  --coral: #e5674f;
-  --gold: #e7ae3b;
-  --line: #d9ded3;
-}
-body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; }
-#quarto-content { max-width: 1080px; }
-.quarto-title-block .title { font-family: 'Playfair Display', Georgia, serif; font-size: 3rem; color: var(--ink); }
-.quarto-title-block .subtitle { color: var(--muted); font-size: 1.15rem; }
-h1, h2, h3 { color: var(--ink); }
-h2 { font-family: 'Playfair Display', Georgia, serif; border-bottom: 1px solid var(--line); padding-bottom: .35rem; }
-a { color: var(--green); }
-.callout { border-left-color: var(--coral) !important; background: var(--panel); }
-table { background: var(--panel); }
-.figure, figure { background: var(--panel); border: 1px solid var(--line); border-radius: 6px; padding: 1rem; }
-.figure-caption, figcaption { color: var(--muted); font-size: .9rem; }
-code { font-family: 'DM Mono', monospace; }
-</style>
-<section id="research-brief" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="research-brief"><span class="header-section-number">1</span> Research brief</h2>
-<p><strong>Best starting point:</strong> the U.S. Bureau of Transportation Statistics (BTS) Airline On-Time Performance dataset. It is the closest single public source to the temporal, route, and operational fields in this project. Treat a flight as one row, keep these variable groups together as a readable schema, and analyze them jointly.</p>
-<p>The graphics below are <strong>analysis schematics</strong>, not empirical findings: no flight records have been downloaded or summarized. They show how to organize the questions and fields before calculating seasonal patterns.</p>
-<div class="callout callout-style-default callout-important callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Important</span>Research question
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>How do commercial flight volume and operational reliability vary by season, route, and departure window, and when do disruptions at major airports appear in later flights on the same aircraft or carrier network?</p>
-</div>
-</div>
-</section>
-<section id="public-data-sources" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="public-data-sources"><span class="header-section-number">2</span> Public data sources</h2>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th style="text-align: left;">Source</th>
-<th style="text-align: left;">What it offers</th>
-<th style="text-align: left;">Fit and caveats</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://www.transtats.bts.gov/ontime/">BTS Airline On-Time Performance</a></td>
-<td style="text-align: left;">U.S. reporting-carrier flight records with scheduled and actual times, airport pair, distance, delays, taxi times, cancellations, and delay-cause fields.</td>
-<td style="text-align: left;"><strong>Recommended core.</strong> Strongest match for the requested fields and multi-year seasonality. It is U.S.-focused; inspect the selected months, reporting coverage, field definitions, and missing values before analysis.</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://opensky-network.org/data/">OpenSky Network data</a></td>
-<td style="text-align: left;">ADS-B surveillance data such as observed aircraft states and trajectories, subject to access and dataset terms.</td>
-<td style="text-align: left;">Useful for studying observed movement or validating flight paths, but not a drop-in replacement for BTS schedules, cancellation reasons, or delay-cause minutes. The supplied “OpenSky” URL points to Aviationstack, not OpenSky.</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://www.kaggle.com/datasets/niszarkiah/flight-dataset">Kaggle flight dataset supplied in the prompt</a></td>
-<td style="text-align: left;">A community-hosted flight dataset.</td>
-<td style="text-align: left;">The supplied page returned <strong>404</strong> when checked on 2026-11-02. If it becomes available, verify its original source, time span, definitions, and redistribution terms before using it.</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><a href="https://aviationstack.com/">Aviationstack API</a></td>
-<td style="text-align: left;">API-based flight and aviation data.</td>
-<td style="text-align: left;">This is the service at the supplied second URL, not OpenSky. Confirm the plan’s historical date range, fields, and reuse limits; API access and historical coverage may be plan-dependent.</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><a href="https://www.ncei.noaa.gov/products/land-based-station/integrated-surface-database">NOAA Integrated Surface Database</a></td>
-<td style="text-align: left;">Quality-controlled surface weather observations from stations around the world.</td>
-<td style="text-align: left;">Add as a weather-measurement source. Match airport/station and observation time carefully; it is not the same thing as BTS’s attributed <code>WeatherDelay</code> minutes.</td>
-</tr>
-</tbody>
-</table>
-<section id="recommended-dataset-design" class="level3" data-number="2.1">
-<h3 data-number="2.1" class="anchored" data-anchor-id="recommended-dataset-design"><span class="header-section-number">2.1</span> Recommended dataset design</h3>
-<p>Start with BTS monthly extracts for a consistent multi-year period, for example 2019–2024. Keep the original flight-level table as the source of truth; organize variables into the three conceptual groups below rather than splitting them into separate datasets. Add a weather table only when needed, joined by airport and timestamp. Record each source’s download date and selected months.</p>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 33%">
-<col style="width: 33%">
-<col style="width: 33%">
-</colgroup>
-<thead>
-<tr class="header">
-<th style="text-align: left;">Idea</th>
-<th style="text-align: left;">Candidate BTS fields</th>
-<th style="text-align: left;">What to examine</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;"><strong>Temporal values</strong></td>
-<td style="text-align: left;"><code>FlightDate</code>, <code>Month</code>, <code>DayOfWeek</code>, <code>CRSDepTime</code>, <code>DepTime</code>, <code>CRSElapsedTime</code></td>
-<td style="text-align: left;">Flights by month/day, departure windows, seasonal delay and cancellation rates.</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;"><strong>Route variables</strong></td>
-<td style="text-align: left;"><code>Origin</code>, <code>Dest</code>, <code>Distance</code>, <code>Flight_Number_Reporting_Airline</code>, <code>Tail_Number</code></td>
-<td style="text-align: left;">Airport pairs, route distance, carrier/flight comparisons, and aircraft rotations.</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;"><strong>Operation variables</strong></td>
-<td style="text-align: left;"><code>DepDelay</code>, <code>ArrDelay</code>, <code>TaxiOut</code>, <code>TaxiIn</code>, <code>Cancelled</code>, <code>CancellationCode</code>, <code>CarrierDelay</code>, <code>WeatherDelay</code>, <code>NASDelay</code>, <code>SecurityDelay</code>, <code>LateAircraftDelay</code></td>
-<td style="text-align: left;">Delay distributions, cancellation rates, ground time, and attributed delay causes.</td>
-</tr>
-</tbody>
-</table>
-<p>The precise available columns can vary by extract and year. Confirm names in the downloaded BTS schema before writing the import step. BTS delay-cause fields describe attributed delay minutes; they are <strong>not</strong> direct meteorological observations. For a weather-based model, join weather observations (or forecasts available at prediction time) separately.</p>
-</section>
-</section>
-<section id="temporal-values-find-the-seasonal-shape" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="temporal-values-find-the-seasonal-shape"><span class="header-section-number">3</span> 1. Temporal values: find the seasonal shape</h2>
-<p>Compare full years month by month, then break results out by day of week and scheduled departure window. Use flight counts for volume and rates or distributions for reliability: a busy month and a delay-prone month are different findings. Scheduled departure time is often recorded in local airport time, so normalize time zones and daylight-saving transitions before joining weather observations.</p>
+<p>This scatterplot uses the <a href="https://nycflights13.tidyverse.org/"><code>nycflights13</code> data</a>, which records flights departing New York City in 2013. Each point represents a flight with recorded air time and distance. Distance is measured in miles; air time is measured in minutes. The transparent points help show where flights overlap.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="project_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p><strong>Useful comparisons:</strong> monthly scheduled flight count; median and 90th-percentile departure/arrival delay; cancellation rate; and all of these by departure-time window. Compare like-for-like years, since a single year’s holiday calendar and disruptions can distort a seasonal pattern.</p>
-</section>
-<section id="route-variables-put-airport-pairs-in-context" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="route-variables-put-airport-pairs-in-context"><span class="header-section-number">4</span> 2. Route variables: put airport pairs in context</h2>
-<p>The route is the <code>Origin</code>–<code>Dest</code> pair, not either airport in isolation. Distance helps stratify comparisons, while flight number and tail number support carrier and aircraft-rotation questions. The sketch below uses representative U.S. hubs only to illustrate a network view; its links are not claims about observed BTS traffic.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="project_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p><strong>Useful comparisons:</strong> seasonal volume and delay by route; compare routes within distance bands; and trace consecutive legs by tail number to test whether an inbound disruption is followed by a late outbound flight. A tail number is not a permanent person- or aircraft-level key across all time, and aircraft rotations need date-aware sequencing.</p>
-</section>
-<section id="operation-variables-separate-outcomes-from-causes" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="operation-variables-separate-outcomes-from-causes"><span class="header-section-number">5</span> 3. Operation variables: separate outcomes from causes</h2>
-<p>Departure delay, arrival delay, taxi-out/in, cancellations, and delay-cause minutes describe different stages or outcomes. Keep cancellation records in the denominator when calculating cancellation rates; missing arrival or delay values on a canceled flight are not zero-minute outcomes.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="project_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>For delay prediction, define <em>when</em> the prediction is made and only use inputs available then. Do not feed actual departure/arrival times, realized delay, or post-flight cause fields into a model meant to predict delay before departure; that leaks the answer. Use a chronological train/test split, and report performance by season, airport, and carrier.</p>
-</section>
-<section id="analysis-plan" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="analysis-plan"><span class="header-section-number">6</span> Analysis plan</h2>
-<ol type="1">
-<li>Download matching BTS monthly extracts and document the date span, schema, and reporting coverage.</li>
-<li>Parse time fields carefully; distinguish missing, canceled, diverted, and zero-delay records.</li>
-<li>Plot monthly flight counts, cancellation rates, and robust delay summaries, with day-of-week and scheduled-departure-window breakdowns.</li>
-<li>Add NOAA station observations for weather features, converting airport-local scheduled times to UTC and checking station proximity and coverage.</li>
-<li>For network propagation, order flights by tail number and timestamp; test whether disruption at an inbound origin predicts the next leg’s delay after controlling for season, route, carrier, and airport.</li>
-<li>Evaluate predictive models with time-ordered splits and features that would genuinely be available at the prediction moment.</li>
-</ol>
-</section>
-<section id="sources" class="level2" data-number="7">
-<h2 data-number="7" class="anchored" data-anchor-id="sources"><span class="header-section-number">7</span> Sources</h2>
-<ul>
-<li>BTS, <a href="https://www.transtats.bts.gov/ontime/">Airline On-Time Statistics and Delay Causes</a>.</li>
-<li>OpenSky Network, <a href="https://opensky-network.org/data/">Data</a>.</li>
-<li>Kaggle, <a href="https://www.kaggle.com/datasets/niszarkiah/flight-dataset">Flight Dataset supplied in the project prompt</a> (page returned 404 when checked 2026-11-02).</li>
-<li>Aviationstack, <a href="https://aviationstack.com/">Flight API</a>.</li>
-<li>NOAA NCEI, <a href="https://www.ncei.noaa.gov/products/land-based-station/integrated-surface-database">Integrated Surface Database</a>.</li>
-</ul>
-</section>
 
-</main>
-<!-- /main column -->
+
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -350,7 +226,7 @@ code { font-family: 'DM Mono', monospace; }
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/mgonzalez-ortiz30\.github\.io\/milestone-5\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
