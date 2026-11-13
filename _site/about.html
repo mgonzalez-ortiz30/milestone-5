@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>About – How Does Flight Distance Relate to Time in the Air?</title>
+<title>Exploration – How Does Flight Distance Relate to Time in the Air?</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -97,11 +97,11 @@ ul.task-list li input[type="checkbox"] {
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
     <a class="nav-link" href="./index.html"> 
-<span class="menu-text">Home</span></a>
+<span class="menu-text">Story</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link active" href="./about.html" aria-current="page"> 
-<span class="menu-text">About</span></a>
+<span class="menu-text">Exploration</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -122,7 +122,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">About</h1>
+<h1 class="title">Exploration</h1>
 </div>
 
 
@@ -139,7 +139,229 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>About this site</p>
+<style>
+.exploration { max-width: 1000px; margin: 0 auto; color: #172923; }
+.exploration-intro { color: #62726a; margin-bottom: 1.5rem; }
+.exploration-card { background: #fffef9; border: 1px solid #d9ded3; border-radius: 8px; padding: 1.25rem; margin: 1.25rem 0; }
+.exploration-card h2 { margin-top: 0; border-bottom: 1px solid #d9ded3; padding-bottom: .4rem; }
+.exploration-card p, .scenario-note { color: #62726a; }
+.exploration svg { display: block; width: 100%; height: auto; touch-action: none; }
+.scenario-controls { display: flex; flex-wrap: wrap; align-items: end; gap: .75rem; margin: .8rem 0; }
+.scenario-controls label { display: grid; gap: .2rem; color: #172923; font-size: .9rem; }
+.scenario-controls input { width: 8rem; padding: .35rem; border: 1px solid #98a79b; border-radius: 4px; }
+.season-cell { cursor: pointer; stroke: #fffef9; stroke-width: 2; }
+.season-cell.selected { stroke: #172923; stroke-width: 3; }
+.airport-node { cursor: grab; touch-action: none; }
+.airport-node:active { cursor: grabbing; }
+.scenario-output { font-weight: 600; color: #176b55; }
+@media (max-width: 600px) {
+  .exploration-card { padding: .8rem; }
+}
+</style>
+<div class="exploration">
+<p>Use the controls to sketch <strong>hypothetical</strong> changes to the three diagrams on the project page. These are interactive teaching visuals, not observed flight records or forecasts. Select a seasonal cell and enter a value, drag airports to rearrange the route sketch, or enter operational values to update the flow diagram.</p>
+<section class="exploration-card" aria-labelledby="seasonal-heading">
+<h2 id="seasonal-heading" class="anchored">
+Seasonal pattern sketch
+</h2>
+<p>
+Choose a month and measure, then enter a hypothetical value. Click or drag across the grid to select a cell.
+</p>
+<div class="scenario-controls">
+<p><label>Month <select id="season-month"> <option value="0">January</option><option value="1">February</option><option value="2">March</option> <option value="3">April</option><option value="4">May</option><option value="5">June</option> <option value="6">July</option><option value="7">August</option><option value="8">September</option> <option value="9">October</option><option value="10">November</option><option value="11">December</option> </select> </label> <label>Measure <select id="season-measure"> <option value="0">Flight volume</option><option value="1">Departure delay</option> <option value="2">Arrival delay</option><option value="3">Cancellations</option> </select> </label> <label>Hypothetical value <input id="season-value" type="number" min="0" max="100" value="45"> </label></p>
+</div>
+<svg id="season-map" viewbox="0 0 760 260" role="img" aria-label="Interactive seasonal heatmap with months and flight measures">
+<g fill="#62726a" font-size="12" font-family="sans-serif"> <text x="10" y="58">Flights</text><text x="10" y="98">Dep. delay</text> <text x="10" y="138">Arr. delay</text><text x="10" y="178">Cancellations</text> <text x="100" y="225">Jan</text><text x="153" y="225">Feb</text><text x="206" y="225">Mar</text> <text x="259" y="225">Apr</text><text x="312" y="225">May</text><text x="365" y="225">Jun</text> <text x="418" y="225">Jul</text><text x="471" y="225">Aug</text><text x="524" y="225">Sep</text> <text x="577" y="225">Oct</text><text x="630" y="225">Nov</text><text x="683" y="225">Dec</text> </g> <g id="season-cells"></g>
+</svg>
+<p class="scenario-note">
+Each cell is an illustrative index from 0 to 100. Editing one cell changes only this sketch.
+</p>
+<p id="season-output" class="scenario-output" aria-live="polite">
+</p>
+</section>
+<section class="exploration-card" aria-labelledby="route-heading">
+<h2 id="route-heading" class="anchored">
+Draggable route sketch
+</h2>
+<p>
+Drag any airport node. Enter a hypothetical route distance and daily flight count to change the highlighted link.
+</p>
+<div class="scenario-controls">
+<p><label>SEA–ORD distance (miles) <input id="route-distance" type="number" min="100" max="5000" value="1721"> </label> <label>Hypothetical flights per day <input id="route-flights" type="number" min="0" max="500" value="12"> </label></p>
+</div>
+<svg id="route-map" viewbox="0 0 760 330" role="img" aria-label="Draggable schematic airport route network">
+<g fill="none" stroke="#cbd4c8" stroke-width="2"> <line class="route-link" data-from="SEA" data-to="SFO"></line><line class="route-link" data-from="SFO" data-to="DEN"></line> <line class="route-link" data-from="DEN" data-to="ORD"></line><line class="route-link" data-from="ORD" data-to="JFK"></line> <line class="route-link" data-from="ORD" data-to="ATL"></line><line class="route-link" data-from="DEN" data-to="DFW"></line> <line class="route-link" data-from="DFW" data-to="ATL"></line> </g> <line id="route-highlight" data-from="SEA" data-to="ORD" stroke="#e5674f" stroke-width="4"></line> <text id="route-label" x="290" y="95" fill="#172923" font-size="13" font-family="sans-serif">1,721 mi · 12 flights/day</text> <g class="airport-node" data-code="SEA" transform="translate(120 80)"><circle r="13" fill="#e5674f"></circle><text y="31" text-anchor="middle" fill="#172923" font-size="13">SEA</text></g> <g class="airport-node" data-code="SFO" transform="translate(270 130)"><circle r="13" fill="#e5674f"></circle><text y="31" text-anchor="middle" fill="#172923" font-size="13">SFO</text></g> <g class="airport-node" data-code="DEN" transform="translate(390 75)"><circle r="13" fill="#e7ae3b"></circle><text y="31" text-anchor="middle" fill="#172923" font-size="13">DEN</text></g> <g class="airport-node" data-code="ORD" transform="translate(500 145)"><circle r="13" fill="#e7ae3b"></circle><text y="31" text-anchor="middle" fill="#172923" font-size="13">ORD</text></g> <g class="airport-node" data-code="JFK" transform="translate(650 90)"><circle r="13" fill="#176b55"></circle><text y="31" text-anchor="middle" fill="#172923" font-size="13">JFK</text></g> <g class="airport-node" data-code="ATL" transform="translate(600 260)"><circle r="13" fill="#176b55"></circle><text y="31" text-anchor="middle" fill="#172923" font-size="13">ATL</text></g> <g class="airport-node" data-code="DFW" transform="translate(330 250)"><circle r="13" fill="#e7ae3b"></circle><text y="31" text-anchor="middle" fill="#172923" font-size="13">DFW</text></g>
+</svg>
+<p class="scenario-note">
+This schematic has no geographic scale. Dragging nodes changes the drawing only, not real airport coordinates.
+</p>
+<p id="route-output" class="scenario-output" aria-live="polite">
+</p>
+</section>
+<section class="exploration-card" aria-labelledby="operation-heading">
+<h2 id="operation-heading" class="anchored">
+Operational outcome sketch
+</h2>
+<p>
+Enter hypothetical delay minutes and cancellation percentage to change the relative bars.
+</p>
+<div class="scenario-controls">
+<p><label>Departure delay (minutes) <input id="departure-delay" type="number" min="0" max="600" value="20"> </label> <label>Arrival delay (minutes) <input id="arrival-delay" type="number" min="0" max="600" value="35"> </label> <label>Cancellations (percent) <input id="cancel-rate" type="number" min="0" max="100" value="4"> </label></p>
+</div>
+<svg viewbox="0 0 760 210" role="img" aria-label="Hypothetical bar diagram for departure delay, arrival delay, and cancellations">
+<g fill="#62726a" font-size="13" font-family="sans-serif"> <text x="12" y="53">Departure delay</text><text x="12" y="108">Arrival delay</text><text x="12" y="163">Cancellations</text> </g> <g fill="#eef0e8"> <rect x="160" y="32" width="500" height="24" rx="4"></rect><rect x="160" y="87" width="500" height="24" rx="4"></rect> <rect x="160" y="142" width="500" height="24" rx="4"></rect> </g> <rect id="departure-bar" x="160" y="32" width="16.7" height="24" rx="4" fill="#e7ae3b"></rect> <rect id="arrival-bar" x="160" y="87" width="29.2" height="24" rx="4" fill="#e5674f"></rect> <rect id="cancel-bar" x="160" y="142" width="20" height="24" rx="4" fill="#176b55"></rect> <g id="operation-values" fill="#172923" font-size="13" font-family="sans-serif"> <text id="departure-label" x="670" y="50">20 min</text><text id="arrival-label" x="670" y="105">35 min</text> <text id="cancel-label" x="670" y="160">4%</text> </g>
+</svg>
+<p class="scenario-note">
+Bars are scaled to the input ranges, not to an empirical flight dataset.
+</p>
+<p id="operation-output" class="scenario-output" aria-live="polite">
+</p>
+</section>
+</div>
+<script>
+(() => {
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const measureNames = ["Flight volume", "Departure delay", "Arrival delay", "Cancellations"];
+  const colors = ["#bfd75a", "#e7ae3b", "#e5674f", "#176b55"];
+  const cellValues = Array.from({ length: 4 }, (_, row) =>
+    Array.from({ length: 12 }, (_, month) => 28 + ((month * 13 + row * 19) % 65))
+  );
+  const cellGroup = document.getElementById("season-cells");
+  const monthInput = document.getElementById("season-month");
+  const measureInput = document.getElementById("season-measure");
+  const valueInput = document.getElementById("season-value");
+  const seasonOutput = document.getElementById("season-output");
+  let selectedCell;
+
+  cellValues.forEach((row, rowIndex) => row.forEach((value, monthIndex) => {
+    const cell = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+    cell.setAttribute("x", 92 + monthIndex * 53);
+    cell.setAttribute("y", 34 + rowIndex * 40);
+    cell.setAttribute("width", 48);
+    cell.setAttribute("height", 32);
+    cell.setAttribute("rx", 4);
+    cell.setAttribute("class", "season-cell");
+    cell.dataset.month = monthIndex;
+    cell.dataset.measure = rowIndex;
+    cellGroup.append(cell);
+    cell.addEventListener("pointerdown", () => selectCell(cell));
+    cell.addEventListener("pointerenter", (event) => {
+      if (event.buttons === 1) selectCell(cell);
+    });
+  }));
+
+  function colorFor(value, row) {
+    const opacity = 0.2 + (value / 100) * 0.8;
+    return `${colors[row]}${Math.round(opacity * 255).toString(16).padStart(2, "0")}`;
+  }
+
+  function paintCell(cell) {
+    const month = Number(cell.dataset.month);
+    const row = Number(cell.dataset.measure);
+    cellValues[row][month] = Math.max(0, Math.min(100, Number(valueInput.value) || 0));
+    cell.setAttribute("fill", colorFor(cellValues[row][month], row));
+    seasonOutput.textContent = `${monthNames[month]} · ${measureNames[row]}: hypothetical index ${cellValues[row][month]}/100.`;
+  }
+
+  function selectCell(cell) {
+    selectedCell?.classList.remove("selected");
+    selectedCell = cell;
+    selectedCell.classList.add("selected");
+    monthInput.value = cell.dataset.month;
+    measureInput.value = cell.dataset.measure;
+    valueInput.value = cellValues[Number(cell.dataset.measure)][Number(cell.dataset.month)];
+    paintCell(cell);
+  }
+
+  cellGroup.querySelectorAll(".season-cell").forEach((cell) => {
+    cell.setAttribute("fill", colorFor(cellValues[Number(cell.dataset.measure)][Number(cell.dataset.month)], Number(cell.dataset.measure)));
+  });
+  function selectFromInputs() {
+    selectCell(cellGroup.querySelector(`[data-month="${monthInput.value}"][data-measure="${measureInput.value}"]`));
+  }
+  monthInput.addEventListener("change", selectFromInputs);
+  measureInput.addEventListener("change", selectFromInputs);
+  valueInput.addEventListener("input", () => selectedCell && paintCell(selectedCell));
+  selectFromInputs();
+
+  const routeSvg = document.getElementById("route-map");
+  const routeLine = document.getElementById("route-highlight");
+  const routeLabel = document.getElementById("route-label");
+  const routeDistance = document.getElementById("route-distance");
+  const routeFlights = document.getElementById("route-flights");
+  const routeOutput = document.getElementById("route-output");
+  const nodes = new Map([...routeSvg.querySelectorAll(".airport-node")].map((node) => [node.dataset.code, node]));
+  let activeNode;
+
+  function nodePosition(node) {
+    const match = node.getAttribute("transform").match(/translate\(([-\d.]+)\s+([-\d.]+)\)/);
+    return { x: Number(match[1]), y: Number(match[2]) };
+  }
+  function updateRoute() {
+    const sea = nodePosition(nodes.get("SEA"));
+    const ord = nodePosition(nodes.get("ORD"));
+    const distance = Math.max(100, Math.min(5000, Number(routeDistance.value) || 100));
+    const flights = Math.max(0, Math.min(500, Number(routeFlights.value) || 0));
+    routeDistance.value = distance;
+    routeFlights.value = flights;
+    routeSvg.querySelectorAll("[data-from][data-to]").forEach((line) => {
+      const start = nodePosition(nodes.get(line.dataset.from));
+      const end = nodePosition(nodes.get(line.dataset.to));
+      line.setAttribute("x1", start.x);
+      line.setAttribute("y1", start.y);
+      line.setAttribute("x2", end.x);
+      line.setAttribute("y2", end.y);
+    });
+    routeLine.setAttribute("stroke-width", 2 + Math.min(flights, 100) / 10);
+    routeLabel.setAttribute("x", (sea.x + ord.x) / 2);
+    routeLabel.setAttribute("y", (sea.y + ord.y) / 2 - 12);
+    routeLabel.textContent = `${distance.toLocaleString()} mi · ${flights} flights/day`;
+    routeOutput.textContent = `Hypothetical SEA–ORD route: ${distance.toLocaleString()} miles and ${flights} flights per day.`;
+  }
+  function moveNode(event) {
+    if (!activeNode) return;
+    const point = routeSvg.createSVGPoint();
+    point.x = event.clientX;
+    point.y = event.clientY;
+    const local = point.matrixTransform(routeSvg.getScreenCTM().inverse());
+    const x = Math.max(30, Math.min(730, local.x));
+    const y = Math.max(30, Math.min(300, local.y));
+    activeNode.setAttribute("transform", `translate(${x} ${y})`);
+    updateRoute();
+  }
+  routeSvg.querySelectorAll(".airport-node").forEach((node) => {
+    node.addEventListener("pointerdown", (event) => {
+      activeNode = node;
+      node.setPointerCapture(event.pointerId);
+    });
+    node.addEventListener("pointermove", moveNode);
+    node.addEventListener("pointerup", () => { activeNode = null; });
+    node.addEventListener("pointercancel", () => { activeNode = null; });
+  });
+  routeDistance.addEventListener("input", updateRoute);
+  routeFlights.addEventListener("input", updateRoute);
+  updateRoute();
+
+  const operationInputs = [
+    { input: "departure-delay", bar: "departure-bar", label: "departure-label", suffix: " min", scale: 600 },
+    { input: "arrival-delay", bar: "arrival-bar", label: "arrival-label", suffix: " min", scale: 600 },
+    { input: "cancel-rate", bar: "cancel-bar", label: "cancel-label", suffix: "%", scale: 100 }
+  ];
+  function updateOperations() {
+    operationInputs.forEach(({ input, bar, label, suffix, scale }) => {
+      const field = document.getElementById(input);
+      const value = Math.max(0, Math.min(scale, Number(field.value) || 0));
+      field.value = value;
+      document.getElementById(bar).setAttribute("width", (500 * value / scale).toFixed(1));
+      document.getElementById(label).textContent = `${value}${suffix}`;
+    });
+    document.getElementById("operation-output").textContent =
+      `Hypothetical delays: ${document.getElementById("departure-delay").value} minutes departing and ${document.getElementById("arrival-delay").value} minutes arriving; cancellation rate ${document.getElementById("cancel-rate").value}%.`;
+  }
+  operationInputs.forEach(({ input }) => document.getElementById(input).addEventListener("input", updateOperations));
+  updateOperations();
+})();
+</script>
 
 
 
