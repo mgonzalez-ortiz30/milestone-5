@@ -2,9 +2,23 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "How Does Flight Distance Relate to Time in the Air?",
+    "title": "Story",
     "section": "",
-    "text": "This scatterplot uses the nycflights13 data, which records flights departing New York City in 2013. Each point represents a flight with recorded air time and distance. Distance is measured in miles; air time is measured in minutes. The transparent points help show where flights overlap."
+    "text": "Exploration is a what-if sketchpad, not a flight forecast. Try changing a seasonal cell, route distance or flight count, or delay and cancellation values to see how a scenario appears. Aviators can use it to frame questions about seasonal patterns and disruptions; travelers can use it to think about timing and possible delays. For real decisions, check current airline information and official aviation and weather guidance.\n\n Try a scenario season · route · delay   See the sketch cells · routes · bars   Ask what to check\n\n\nExplore a scenario → view its shape → decide what real information to check.\n\n\n\n\n\n\nEach seasonal cell is a hypothetical index from 0 to 100, not a count of flights or minutes of delay. Select a month and measure, then enter an index: the selected cell updates, and its color becomes more opaque as the value rises. The row’s color identifies the measure; the shade makes the entered value easier to compare visually. Other cells stay unchanged. These illustrative starting values help demonstrate the interaction—they are not calculated from flight records.\n\nHypothetical index    0 100  Same row color, different shade    lower middle higher The control changes the selected cell’s opacity, not real-world flight data.\n\n\nA stronger shade means a higher entered index in this demo—not necessarily more flights, more delay, or greater risk."
+  },
+  {
+    "objectID": "index.html#planning-heading",
+    "href": "index.html#planning-heading",
+    "title": "Story",
+    "section": "",
+    "text": "Exploration is a what-if sketchpad, not a flight forecast. Try changing a seasonal cell, route distance or flight count, or delay and cancellation values to see how a scenario appears. Aviators can use it to frame questions about seasonal patterns and disruptions; travelers can use it to think about timing and possible delays. For real decisions, check current airline information and official aviation and weather guidance.\n\n Try a scenario season · route · delay   See the sketch cells · routes · bars   Ask what to check\n\n\nExplore a scenario → view its shape → decide what real information to check."
+  },
+  {
+    "objectID": "index.html#cells-heading",
+    "href": "index.html#cells-heading",
+    "title": "Story",
+    "section": "",
+    "text": "Each seasonal cell is a hypothetical index from 0 to 100, not a count of flights or minutes of delay. Select a month and measure, then enter an index: the selected cell updates, and its color becomes more opaque as the value rises. The row’s color identifies the measure; the shade makes the entered value easier to compare visually. Other cells stay unchanged. These illustrative starting values help demonstrate the interaction—they are not calculated from flight records.\n\nHypothetical index    0 100  Same row color, different shade    lower middle higher The control changes the selected cell’s opacity, not real-world flight data.\n\n\nA stronger shade means a higher entered index in this demo—not necessarily more flights, more delay, or greater risk."
   },
   {
     "objectID": "project.html",
@@ -65,8 +79,8 @@
   {
     "objectID": "about.html",
     "href": "about.html",
-    "title": "About",
+    "title": "Exploration",
     "section": "",
-    "text": "About this site"
+    "text": "Use the controls to sketch hypothetical changes to the three diagrams on the project page. These are interactive teaching visuals, not observed flight records or forecasts. Select a seasonal cell and enter a value, drag airports to rearrange the route sketch, or enter operational values to update the flow diagram.\n\n\nSeasonal pattern sketch\n\n\nChoose a month and measure, then enter a hypothetical value. Click or drag across the grid to select a cell.\n\n\nMonth  JanuaryFebruaryMarch AprilMayJune JulyAugustSeptember OctoberNovemberDecember   Measure  Flight volumeDeparture delay Arrival delayCancellations   Hypothetical value  \n\n\n FlightsDep. delay Arr. delayCancellations JanFebMar AprMayJun JulAugSep OctNovDec  \n\n\nEach cell is an illustrative index from 0 to 100. Editing one cell changes only this sketch.\n\n\n\n\n\n\nDraggable route sketch\n\n\nDrag any airport node. Enter a hypothetical route distance and daily flight count to change the highlighted link.\n\n\nSEA–ORD distance (miles)   Hypothetical flights per day  \n\n\n       1,721 mi · 12 flights/day SEA SFO DEN ORD JFK ATL DFW\n\n\nThis schematic has no geographic scale. Dragging nodes changes the drawing only, not real airport coordinates.\n\n\n\n\n\n\nOperational outcome sketch\n\n\nEnter hypothetical delay minutes and cancellation percentage to change the relative bars.\n\n\nDeparture delay (minutes)   Arrival delay (minutes)   Cancellations (percent)  \n\n\n Departure delayArrival delayCancellations          20 min35 min 4% \n\n\nBars are scaled to the input ranges, not to an empirical flight dataset."
   }
 ]

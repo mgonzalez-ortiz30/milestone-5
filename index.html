@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>How Does Flight Distance Relate to Time in the Air?</title>
+<title>Story – How_To:_Analyzing_Flight_Patterns_In_A_Year</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -86,7 +86,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">How Does Flight Distance Relate to Time in the Air?</span>
+    <span class="navbar-title">How_To:_Analyzing_Flight_Patterns_In_A_Year</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -97,11 +97,11 @@ ul.task-list li input[type="checkbox"] {
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
     <a class="nav-link active" href="./index.html" aria-current="page"> 
-<span class="menu-text">Home</span></a>
+<span class="menu-text">Story</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
-<span class="menu-text">About</span></a>
+<span class="menu-text">Exploration</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -122,7 +122,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">How Does Flight Distance Relate to Time in the Air?</h1>
+<h1 class="title">Story</h1>
 </div>
 
 
@@ -139,15 +139,39 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>This scatterplot uses the <a href="https://nycflights13.tidyverse.org/"><code>nycflights13</code> data</a>, which records flights departing New York City in 2013. Each point represents a flight with recorded air time and distance. Distance is measured in miles; air time is measured in minutes. The transparent points help show where flights overlap.</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
+<style>
+.story-page { max-width: 900px; margin: 0 auto; color: #172923; }
+.story-box { margin: 1.25rem 0; padding: 1.25rem; border: 1px solid #d9ded3; border-radius: 8px; background: #fffef9; }
+.story-box h2 { margin-top: 0; border-bottom: 1px solid #d9ded3; padding-bottom: .4rem; }
+.story-box p { color: #52635a; }
+.story-visual { display: block; width: 100%; height: auto; margin: .8rem 0; }
+.story-caption { margin-bottom: 0; font-size: .9rem; }
+</style>
+<div class="story-page">
+<section class="story-box" aria-labelledby="planning-heading">
+<section id="planning-heading" class="level2">
+<h2 class="anchored" data-anchor-id="planning-heading">How to use Exploration</h2>
+<p>Exploration is a <strong>what-if sketchpad</strong>, not a flight forecast. Try changing a seasonal cell, route distance or flight count, or delay and cancellation values to see how a scenario appears. Aviators can use it to frame questions about seasonal patterns and disruptions; travelers can use it to think about timing and possible delays. For real decisions, check current airline information and official aviation and weather guidance.</p>
+<svg class="story-visual" viewbox="0 0 760 170" role="img" aria-label="Change a scenario, see a visual response, and use it to ask planning questions">
+<rect x="10" y="35" width="210" height="90" rx="10" fill="#eef0e8"></rect> <text x="115" y="68" text-anchor="middle" fill="#172923" font-size="16" font-family="sans-serif" font-weight="bold">Try a scenario</text> <text x="115" y="94" text-anchor="middle" fill="#52635a" font-size="13" font-family="sans-serif">season · route · delay</text> <path d="M235 80h85" stroke="#176b55" stroke-width="3"></path><path d="m310 72 12 8-12 8" fill="none" stroke="#176b55" stroke-width="3"></path> <rect x="335" y="35" width="190" height="90" rx="10" fill="#f3e7d4"></rect> <text x="430" y="68" text-anchor="middle" fill="#172923" font-size="16" font-family="sans-serif" font-weight="bold">See the sketch</text> <text x="430" y="94" text-anchor="middle" fill="#52635a" font-size="13" font-family="sans-serif">cells · routes · bars</text> <path d="M540 80h75" stroke="#176b55" stroke-width="3"></path><path d="m605 72 12 8-12 8" fill="none" stroke="#176b55" stroke-width="3"></path> <rect x="630" y="35" width="120" height="90" rx="10" fill="#dcebe3"></rect> <text x="690" y="68" text-anchor="middle" fill="#172923" font-size="15" font-family="sans-serif" font-weight="bold">Ask</text> <text x="690" y="91" text-anchor="middle" fill="#52635a" font-size="12" font-family="sans-serif">what to check</text>
+</svg>
+<p class="story-caption">
+Explore a scenario → view its shape → decide what real information to check.
+</p>
+</section>
+<section class="story-box" aria-labelledby="cells-heading">
+</section>
+<section id="cells-heading" class="level2">
+<h2 class="anchored" data-anchor-id="cells-heading">What the cells show</h2>
+<p>Each seasonal cell is a <strong>hypothetical index from 0 to 100</strong>, not a count of flights or minutes of delay. Select a month and measure, then enter an index: the selected cell updates, and its color becomes more opaque as the value rises. The row’s color identifies the measure; the shade makes the entered value easier to compare visually. Other cells stay unchanged. These illustrative starting values help demonstrate the interaction—they are not calculated from flight records.</p>
+<svg class="story-visual" viewbox="0 0 760 185" role="img" aria-label="A hypothetical index value controls the opacity of a seasonal heatmap cell">
+<text x="20" y="32" fill="#172923" font-size="14" font-family="sans-serif" font-weight="bold">Hypothetical index</text> <rect x="20" y="50" width="180" height="22" rx="11" fill="#d9ded3"></rect> <rect x="20" y="50" width="117" height="22" rx="11" fill="#176b55"></rect> <circle cx="137" cy="61" r="13" fill="#fffef9" stroke="#176b55" stroke-width="3"></circle> <text x="20" y="96" fill="#52635a" font-size="12" font-family="sans-serif">0</text> <text x="185" y="96" fill="#52635a" font-size="12" font-family="sans-serif">100</text> <path d="M230 61h85" stroke="#176b55" stroke-width="3"></path><path d="m305 53 12 8-12 8" fill="none" stroke="#176b55" stroke-width="3"></path> <text x="345" y="32" fill="#172923" font-size="14" font-family="sans-serif" font-weight="bold">Same row color, different shade</text> <rect x="345" y="50" width="90" height="52" rx="5" fill="#176b55" fill-opacity=".25"></rect> <rect x="450" y="50" width="90" height="52" rx="5" fill="#176b55" fill-opacity=".55"></rect> <rect x="555" y="50" width="90" height="52" rx="5" fill="#176b55" fill-opacity=".9"></rect> <text x="390" y="124" text-anchor="middle" fill="#52635a" font-size="12" font-family="sans-serif">lower</text> <text x="495" y="124" text-anchor="middle" fill="#52635a" font-size="12" font-family="sans-serif">middle</text> <text x="600" y="124" text-anchor="middle" fill="#52635a" font-size="12" font-family="sans-serif">higher</text> <text x="345" y="160" fill="#52635a" font-size="12" font-family="sans-serif">The control changes the selected cell’s opacity, not real-world flight data.</text>
+</svg>
+<p class="story-caption">
+A stronger shade means a higher entered index in this demo—not necessarily more flights, more delay, or greater risk.
+</p>
+</section>
+</section>
 </div>
 
 
@@ -226,7 +250,7 @@ ul.task-list li input[type="checkbox"] {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp("https:\/\/mgonzalez-ortiz30\.github\.io\/milestone-5\/");
+        var filterRegex = new RegExp("https:\/\/mgonzalez-ortiz30\.github\.io\/How_To_Analyzing_Flight_Patterns_In_A_Year\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
